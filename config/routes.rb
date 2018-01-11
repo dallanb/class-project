@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
 
 
-  post '/rate' => 'rater#create', :as => 'rate'
+ 
+  get 'news/index'
+
   get 'baths/new'
 
   get 'baths/create'
@@ -9,6 +11,8 @@ Rails.application.routes.draw do
   get 'baths/index'
 
   get 'baths/show'
+  
+  get 'news' => 'news#index'
 
   get 'main/index'
   get 'newbath' => 'baths#index'
@@ -17,14 +21,15 @@ Rails.application.routes.draw do
   get 'main/show'
   get 'profile', to: 'main#show'
   get 'about', to: 'main#aboutus'
-  get 'single', to: 'main#single'
   get 'locations', to: 'main#nearme'
   get 'practice', to: 'main#practice'
   root 'main#index'
   resources :postsrake
 
-  devise_for :users, controllers: { registrations: "registrations" }
+  devise_for :users, controllers: { registrations: "registrations", omniauth_callbacks: 'omniauth_callbacks' }
   match 'users/:id' => 'main#destroy', :via => :delete, :as => :admin_destroy_user
+  match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+ 
 
   get 'change', to: 'registrations#change'
 
@@ -38,16 +43,32 @@ Rails.application.routes.draw do
 
 
   resources :baths do
+    # delete 'baths/showsingle/:id' => 'baths#showsingle', :via => :get
     resources :reviews
+    get 'reviews/:id' => 'reviews#destroy', :via => :delete, :as => :review_destroy
+    
+
+  end
+  
+  resources :reviews do
+    resources :flags
+  end
+  
+  resources :baths do 
+    resources :bath_images
   end
 
+  get 'report' => 'reviews#reported'
   get 'accept' => 'baths#edit'
   get 'request' => 'baths#requests'
+  # get 'review_destroy' => 'reviews#delete'
   get 'baths/showsingle/:id' => 'baths#showsingle', :as => :view
-  get 'reviews/new/:id' => 'reviews#new', :as => :gob
-  # # get 'newreview', to: 'baths#newreview'
-  # get 'showreview', to: 'baths#showreview'
-  # get '/reviews/new/:id' => 'reviews#new', :as => :newreview
+  get 'main/directions/:id' => 'main#directions', :as => :direction
+  get 'game' => 'game#game'
+  
+ 
+
+
 
   # clean this file up by seeing which "get"'s can be replaced with their equavilant rake routes name
 

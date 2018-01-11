@@ -11,15 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160712204731) do
+ActiveRecord::Schema.define(version: 20160801211823) do
 
-  create_table "average_caches", force: :cascade do |t|
-    t.integer  "rater_id"
-    t.integer  "rateable_id"
-    t.string   "rateable_type"
-    t.float    "avg",           null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "bath_images", force: :cascade do |t|
+    t.integer  "bath_id"
+    t.integer  "user_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
   create_table "baths", force: :cascade do |t|
@@ -31,55 +33,29 @@ ActiveRecord::Schema.define(version: 20160712204731) do
     t.integer  "rating"
     t.boolean  "admin_accept"
     t.integer  "user_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.float    "latitude"
     t.float    "longitude"
     t.string   "apartment"
+    t.string   "name"
   end
 
   add_index "baths", ["user_id", "created_at"], name: "index_baths_on_user_id_and_created_at"
 
-  create_table "overall_averages", force: :cascade do |t|
-    t.integer  "rateable_id"
-    t.string   "rateable_type"
-    t.float    "overall_avg",   null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "flags", force: :cascade do |t|
+    t.integer  "review_id",  default: 1
+    t.integer  "user_id",    default: 1
+    t.string   "reason"
+    t.integer  "count"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
-  create_table "rates", force: :cascade do |t|
-    t.integer  "rater_id"
-    t.integer  "rateable_id"
-    t.string   "rateable_type"
-    t.float    "stars",         null: false
-    t.string   "dimension"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+  add_index "flags", ["review_id"], name: "index_flags_on_review_id"
+  add_index "flags", ["user_id", "review_id"], name: "index_flags_on_user_id_and_review_id", unique: true
+  add_index "flags", ["user_id"], name: "index_flags_on_user_id"
 
-  add_index "rates", ["rateable_id", "rateable_type"], name: "index_rates_on_rateable_id_and_rateable_type"
-  add_index "rates", ["rater_id"], name: "index_rates_on_rater_id"
-
-  create_table "rating_caches", force: :cascade do |t|
-    t.integer  "cacheable_id"
-    t.string   "cacheable_type"
-    t.float    "avg",            null: false
-    t.integer  "qty",            null: false
-    t.string   "dimension"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "rating_caches", ["cacheable_id", "cacheable_type"], name: "index_rating_caches_on_cacheable_id_and_cacheable_type"
-
-  create_table "reviews", force: :cascade do |t|
-    t.text     "post"
-    t.integer  "user_id"
-    t.integer  "bath_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   add_index "reviews", ["user_id", "bath_id", "created_at"], name: "index_reviews_on_user_id_and_bath_id_and_created_at"
 
@@ -101,6 +77,12 @@ ActiveRecord::Schema.define(version: 20160712204731) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "ip_address"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

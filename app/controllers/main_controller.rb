@@ -1,46 +1,46 @@
 class MainController < ApplicationController
-  before_action :authenticate_user!
   def index
+    authenticate_user!
+  end
+  
+  def directions
+    authenticate_user!
+    @bath = Bath.find(params[:id])
   end
 
-  def single
-   
-  end
-  
   def nearme
+    authenticate_user!
     if params[:search].present?
-      @baths = Bath.near(params[:search], 50)
-    else
-      @baths = Bath.all
+      @baths = Bath.near(params[:search], 10).where(:admin_accept => true)
+    else 
+      @baths = Bath.near([current_user.latitude, current_user.longitude], 10).where(:admin_accept => true)
     end
   end
-  
-  
-  def practice
-    @lat_lng = cookies[:lat_lng].try(:split, "|")
-    current_user.latitude=@lat_lng[0]
-    current_user.longitude=@lat_lng[1]
-  end
-  
+
   def show
- 
-    @user = User.all
+    authenticate_user!
+    # @user = User.all
+    @user = User.paginate(page: params[:page], per_page: 5)
   end
   
   def destroy
+    authenticate_user!
     @user = User.find(params[:id])
-
-
-    if @user.destroy
+    @reviews = @user.reviews.all
+    @reviews.each do |review|
+      review.destroy
+    end
+    if @user.destroy && @reviews.count == 0 
         redirect_to profile_path, notice: "User deleted."
     end
   end
+  
 
   private
 
     def user_params
       params.require(:user).permit(:name, :email, :password,
-                                   :password_confirmation, :role, :latitude, :longitude)
+                                   :password_confirmation, :role, :latitude, :longitude, :image)
     end
     
     def ip_time

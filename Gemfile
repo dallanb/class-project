@@ -10,6 +10,14 @@ gem 'jbuilder',     '2.2.3'
 gem 'bootstrap-sass'
 gem 'bcrypt'
 gem 'devise'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'figaro'
+gem 'open_uri_redirections'
+gem 'bootstrap-social-rails'
+gem 'font-awesome-rails'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
 
 gem 'sdoc',         '0.4.0', group: :doc
 gem 'autoprefixer-rails'
@@ -26,18 +34,23 @@ gem 'formtastic'
 gem 'geocoder'
 gem 'gmaps4rails'
 gem 'ratyrate'
+gem 'carrierwave'
+gem "paperclip", "~> 4.2"
+gem 'aws-sdk', '<2.0'
+gem 'bing-search'
+gem 'searchbing'
 
 group :development, :test do
   gem 'sqlite3',     '1.3.9'
   gem 'byebug',      '3.4.0'
   gem 'web-console', '2.0.0.beta3'
   gem 'spring',      '1.1.3'
-  gem 'rspec-rails'
-  gem 'capybara'
-  gem 'factory_girl_rails'
-  gem 'guard-rspec'
+  gem 'rspec-rails', '~>3.0'
+  gem 'railroady'
+
   gem 'spring-commands-rspec'
   gem 'vcr'
+
 end
 
 group :production do
@@ -49,4 +62,8 @@ end
 
 group :test do
   gem 'webmock'
+  gem 'database_cleaner'
+  gem 'capybara'
+  gem 'factory_girl_rails'
+  gem 'guard-rspec'
 end

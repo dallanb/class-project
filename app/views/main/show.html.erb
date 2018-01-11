@@ -1,16 +1,20 @@
 <!-- Begin user profile page -->
-
 <div id="motto">
-    <p>Giant tropical centipedes share their territories with tarantulas. Despite it's impressive length, it's a nimble navigator, and some can be highly venomous. As quick as lightning, just like the tarantula it's killing, the centipede has two curved hollow fangs which inject paralyzing venom.
-Even tarantulas aren't immune from an ambush.</p>
-    <p>This centipede is a predator...</p>
+    <h1 style="color: white">Profile</h2>
 </div>
+<div class="container-fluid">
+<div class= "row">
+<div style="width:100%;margin:auto;padding:none">
+    <div class="col-md-6 col-md-offset-3">
 
-<div style="width:70%;margin:auto;padding:none">
-    <div class="col-md-6 col md-offset-3">
-        <h1>Profile</h1>
         <% if current_user.role == "female" || current_user.role == "male" %>
             <table class="table">
+                <% if current_user.image != nil %>
+                    <tr>
+                        <th>Profile Picture</th>
+                        <td><%= image_tag current_user.image.url(:mini) %></td>
+                    </tr>
+                <% end %>
                 <tr>
                     <th>Name</th>
                     <td><%= current_user.name %></td>
@@ -36,11 +40,15 @@ Even tarantulas aren't immune from an ambush.</p>
                     <td><%= request.location.city %></td>
                 </tr>
             </table>
-            <%= link_to "Locate me", single_path %>
+
         <% elsif isAdmin? %>
             <% for user in  @user do%>
                 <% if user == current_user %>
                     <table class="table">
+                        <tr>
+                            <th><b>Profile Picture</b></th>
+                            <td><%= image_tag current_user.image.url(:mini) %></td>
+                        </tr>
                         <tr>
                             <th><b>Name</b></th>
                             <td><b><%= user.name %></b></td>
@@ -53,12 +61,11 @@ Even tarantulas aren't immune from an ambush.</p>
                             <th><b>Role</b></th>
                             <td><b><%= user.role %></b></td>
                         </tr>
-                        <tr>
-                            <td><%= link_to 'Destroy', admin_destroy_user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-                        </tr>
+
                     </table>
                 <% else %>
                     <table class="table">
+
                         <tr>
                             <th>Name</th>
                             <td><%= user.name %></td>
@@ -72,12 +79,19 @@ Even tarantulas aren't immune from an ambush.</p>
                             <td><%= user.role %></td>
                         </tr>
                         <tr>
-                            <td><%= link_to 'Destroy', admin_destroy_user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                            <td><%= link_to 'Destroy', admin_destroy_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-danger' %></td>
                         </tr>
+
                     </table>
                 <% end %>
             <% end %>
         <% end %>
-        <%= link_to 'Edit your profile', edit_user_registration_path %>
-    </div>
+        <div class="col-md-6 col-md-offset-3">
+            <% if isAdmin? %>
+                <%= will_paginate @user %>
+            <% end %>
+        </div>
+</div>
+</div>
+</div>
 </div>

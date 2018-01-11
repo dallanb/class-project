@@ -1,55 +1,52 @@
 <!-- Begin edit user information page -->
 
+
 <div id="motto">
-    <p>Here you will mutate for a tougher urine</p>
+    <h1 style="color: white">Edit</h1>
 </div>
 
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-3 well">
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <div class="col-md-12 well">
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true }) do |f| %>
+    <div class= "col-md-6 col-md-offset-3">
       <%= devise_error_messages! %>
 
-      <div class="field">
-        <%= f.label :name %><br />
-        <%= f.text_field :name, autofocus: true %>
-      </div>
+      <%= f.input :name %>
 
-      <div class="field">
-        <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: true %>
-      </div>
+      <%= f.input :email %>
 
       <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
         <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
       <% end %>
 
-      <div class="field">
-        <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-        <%= f.password_field :password, autocomplete: "off" %>
-      </div>
+        <%= f.input :password, placeholder: "leave blank if you don't want to change it" %>
+
+        <%= f.input :password_confirmation %>
+
+      <% if f.object.encrypted_password.present? %>
+          <%= f.input :current_password, placeholder: "we need your current password to confirm your changes" %>
+      <% end %>
 
       <div class="field">
-        <%= f.label :password_confirmation %><br />
-        <%= f.password_field :password_confirmation, autocomplete: "off" %>
-      </div>
+          <% if current_user.image == nil %>
+            <%= f.label :image, "Add a Profile Picture" %><br />
+          <% else %>
+            <%= f.label :image, "Change Your Profile Picture" %><br />
+          <% end %>
+          <%= f.file_field :image, autofocus: true %>
+      </div><br>
 
-      <div class="field">
-        <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-        <%= f.password_field :current_password, autocomplete: "off" %>
-      </div>
+              <%= f.button :submit, class: "btn btn-success" %>
 
-      <div class="actions">
-        <%= f.submit "Update" %>
-      </div>
     <% end %>
 
 
-    <h3>Cancel my account</h3>
+    <h1>Cancel my account</h1>
 
-    <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+    <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-danger" %></p>
 
     <%= link_to "Back", :back %>
   </div>
+</div>
 </div>

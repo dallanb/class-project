@@ -8,42 +8,55 @@ html, body, div, a {
 	vertical-align: baseline;
 	text-decoration: none;
   text-shadow: none;
-  font-family: verdana, arial, helvetica, sans-serif;
+  font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
   font-size: 18px;
+  // background-color:#DCF3FF;
 }
 
-html {
-	line-height: 1;
+body {
+	margin: 25px 75px 25px 75px;
+  min-width:1050px; // suppose you want minimun width of 1000px
+  _width: expression( document.body.clientWidth > 1050 ? "1050px" : "auto" ); /* sets max-width for IE */
 }
 
 h1, h2 {
   text-decoration: none;
   text-shadow: none;
-  font-family: verdana, arial, helvetica, sans-serif;
+  font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;    text-align: center;
 }
 
-body {
-  background-image: image-url("background.jpeg")
+h3 {
+  text-decoration: none;
+  text-shadow: none;
+  font-family: "Montserrat";
+  text-align: center;
+  color: white
 }
 
 /* Motto */
 #motto {
-	width:70%;
+	width:100%;
 	padding: 0.3rem;
 	margin: auto;
-	background-color: rgba(0, 0, 0, 0.8);
+	background-color: #1CA3EC; //1CA3EC 73C7F5
 	text-align: center;
 }
 
 #motto p {
-  margin: 0.3rem 0 0.3rem 0;
-	font-family: Jura;
+  font-family: "Montserrat";
 	font-size: 1.5rem;
 	text-shadow: none;
 	color: white;
 }
 
 
+.smallmotto {
+	width:100%;
+	padding: 0.3rem;
+	margin: auto;
+// 	background-color: #EBF8FF;
+	text-align: center;
+}
 /*body {
   background-color: #fff;
   color: #333;
@@ -121,3 +134,11 @@ div {
   }
 }
 */
+
+
+.moveToLeft{
+  width: 50%;
+  float: left;
+
+
+}

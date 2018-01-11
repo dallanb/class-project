@@ -1,28 +1,38 @@
-<h1>These are the baths near you</h1>
-
+<div id="motto">
+  <h1 style="color: white">These are the baths near you</h1>
+</div>
     <% @baths.each do |bath| %>
     <div class="row">
-        <div class="col-md-6 col md-offset-3">
-            
-            
+        <div class="col-md-6 col-md-offset-3">
+
                     <table class="table">
-                        <tr>
-                            <th><b>Location</b></th>
-                            <td><b><%= bath.city %>, <%= bath.address %></b></td>
-                        </tr>
-                        <tr>
-                            <th><b>Rating</b></th>
-                            <td><b><%= bath.rating %></b></td>
-                        </tr>
-                        <tr>
-                            <th><b>Distance from me</b></th>
-                            <td><b><%= bath.distance_from([current_user.latitude, current_user.longitude]) %> miles away</b></td>
-                        </tr>
-                        
+                      <tr>
+                    <th> </th>
+                    <td style="font-size:25px; float:left;"><b><%= bath.name %></b></td>
+                      </tr>
+                      <tr>
+                          <th><b>Location</b></th>
+                          <td><%= bath.city %>, <%= bath.address %></td>
+                      </tr>
+
+                      <tr>
+                          <th><b>Distance from me</b></th>
+                          <td><%= ((bath.distance_from([current_user.latitude, current_user.longitude]))*1.60934).round(2) %> kilometers away</td>
+                      </tr>
+
+                      <tr style="border-bottom: 1px solid #fff">
+                        <td colspan="2">
+                          <div style="text-alighn:left; width:30%; float: left;"><%= link_to "Directions", direction_path(bath), class: "btn btn-primary"  %></th></div>
+                          <div style="text-align:right; width:30%; float: left;"><%= link_to "View", view_path(bath), class: "btn btn-info" %></div>
+                        </td>
+                      </tr>
+
                     </table>
+
         </div>
     </div>
     <% end %>
-    
-    
+
+
+
     <!--distance(current_user.longitude, current_user.latitude, bath.longitude, bath.latitude)-->

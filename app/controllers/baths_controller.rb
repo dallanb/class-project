@@ -1,8 +1,7 @@
 class BathsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :set_long_lat
   
   def new
-    
     @bath = Bath.new
   end
 
@@ -30,14 +29,20 @@ class BathsController < ApplicationController
   end
 
   def show
-      @baths = Bath.all
+      # @baths = Bath.all
+        @baths = Bath.paginate(page: params[:page], per_page: 5)
   end  
   
   def showsingle
-     @bath = Bath.find(params[:id])
+    @bath = Bath.find(params[:id])
+    @reviews = Review.where(bath_id: @bath)
+    if @reviews.blank?
+     @avg_rating = 0
+    else
+     @avg_rating = @reviews.average(:rating).round(2)
+    end
   end
-
-    
+  
   def edit
     if isAdmin?
       @baths = Bath.where(:admin_accept => false)
@@ -50,7 +55,9 @@ class BathsController < ApplicationController
     @baths = Bath.where(:admin_accept => false)
     @bath = Bath.find(params[:id])
     if @bath.update_attributes(bath_params)
-    render 'edit'
+      render 'edit'
+    else 
+      render home_path
     end
 
   end
@@ -61,18 +68,23 @@ class BathsController < ApplicationController
   
 
   def destroy
-    Bath.find(params[:id]).destroy
-    redirect_to newbath_path, notice: "Bathroom Deleted"
+    @bath = Bath.find(params[:id])
+    @reviews = @bath.reviews.all
+    @reviews.each do |review|
+      review.destroy
+    end
+    
+    if @reviews.count == 0 && @bath.destroy  
+        redirect_to :back, notice: "Bathroom Deleted"
+    end
   end
   private
     
   def bath_params
     params.require(:bath).permit(:city, :address, :province,
-                                   :country, :rating, :latitude, :longitude, :admin_accept, :apartment)
-  end 
-  
+                                   :country, :latitude, :longitude, :admin_accept, :apartment, :name)
+  end
 
-  
   def count_state_match?
     current_baths.country == "CAN"
   end
